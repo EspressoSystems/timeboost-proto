@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+option go_package = "gethexec/";
+
 package forward;
 
 import "google/protobuf/empty.proto";
