@@ -3,7 +3,10 @@ name: Release Go Package
 on:
   push:
     tags:
-      - 'v*'  # Trigger on version tags
+      - 'v*'
+
+env:
+  MODULE_PATH: github.com/EspressoSystems/timeboost-proto
 
 jobs:
   generate-and-release:
@@ -24,14 +27,19 @@ jobs:
         go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
     
     - name: Generate Go code
-      run: make generate
+      run: |
+        make generate
+        mkdir -p pkg
+        mv generated/$MODULE_PATH/* pkg/
+        rm -rf generated
+        cd pkg && go mod init $MODULE_PATH && go mod tidy
       
     - name: Package module
       run: |
-        cd tmp/go
+        cd pkg
         tar -czvf ../timeboost-proto-go.tar.gz .
     
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v1
       with:
-        files: tmp/timeboost-proto-go.tar.gz
+        files: timeboost-proto-go.tar.gz
