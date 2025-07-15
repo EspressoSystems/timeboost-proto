@@ -6,7 +6,7 @@ GOBIN := $(shell go env GOPATH)/bin
 
 generate:
 	@echo "Generating Go code..."
-	@if [ -z "$(wildcard protos/*.proto)" ]; then echo "Error: No .proto files found in protos/"; exit 1; fi
+	@if [ -z "$(wildcard *.proto)" ]; then echo "Error: No .proto files found in protos/"; exit 1; fi
 	@rm -rf $(OUT_DIR)
 	@mkdir -p $(OUT_DIR)
 	@protoc	--proto_path=protos	\
@@ -14,5 +14,5 @@ generate:
 		--plugin=protoc-gen-go-grpc=$(GOBIN)/protoc-gen-go-grpc \
 		--go_out=$(OUT_DIR) --go_opt=module=$(MODULE_PATH) \
 		--go-grpc_out=$(OUT_DIR) --go-grpc_opt=module=$(MODULE_PATH) \
-    	protos/*.proto
+    	*.proto
 	@echo "Code generation complete"
