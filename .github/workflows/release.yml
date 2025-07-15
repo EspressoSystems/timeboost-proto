@@ -30,14 +30,18 @@ jobs:
       run: |
         make generate
         mkdir -p pkg
-        mv generated/$MODULE_PATH/* pkg/
+        find generated -type f -name '*.go' -exec mv {} pkg/ \;
         rm -rf generated
-        cd pkg && go mod init $MODULE_PATH && go mod tidy
+        cd pkg
+        go mod init $MODULE_PATH
+        go get google.golang.org/protobuf@v1.28
+        go get google.golang.org/grpc@v1.2
+        go mod tidy
       
     - name: Package module
       run: |
         cd pkg
-        tar -czvf ../timeboost-proto-go.tar.gz .
+        tar -czvf ../timeboost-proto-go.tar.gz --exclude='go.sum' .
     
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v1
