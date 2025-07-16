@@ -6,7 +6,7 @@ on:
       - 'v*'
 
 env:
-  MODULE_PATH: github.com/EspressoSystems/timeboost-proto
+  MODULE_PATH: github.com/EspressoSystems/timeboost-proto/go-generated
 
 jobs:
   generate-and-release:
@@ -23,27 +23,4 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y protobuf-compiler
-        go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
-        go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
-    
-    - name: Generate Go code
-      run: |
-        make generate
-        mkdir -p pkg
-        find generated -type f -name '*.go' -exec mv {} pkg/ \;
-        rm -rf generated
-        cd pkg
-        go mod init $MODULE_PATH
-        go get google.golang.org/protobuf@v1.28
-        go get google.golang.org/grpc@v1.2
-        go mod tidy
-      
-    - name: Package module
-      run: |
-        cd pkg
-        tar -czvf ../timeboost-proto-go.tar.gz --exclude='go.sum' .
-    
-    - name: Create GitHub Release
-      uses: softprops/action-gh-release@v1
-      with:
-        files: timeboost-proto-go.tar.gz
+        protoc --version

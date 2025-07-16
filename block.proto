@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "github.com/EspressoSystems/timeboost-proto";
+option go_package = "github.com/EspressoSystems/timeboost-proto/go-generated";
 
 package block;
 
