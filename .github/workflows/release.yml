@@ -1,12 +1,11 @@
-name: Release Go Package
+name: Validate Go Module
 
 on:
   push:
     tags:
       - 'v*'
-
-env:
-  MODULE_PATH: github.com/EspressoSystems/timeboost-proto/go-generated
+    branches:
+      - main
 
 jobs:
   generate-and-release:
@@ -18,9 +17,8 @@ jobs:
       uses: actions/setup-go@v4
       with:
         go-version: '1.23'
-    
-    - name: Install protoc
+    - name: Validate Go module
       run: |
-        sudo apt-get update
-        sudo apt-get install -y protobuf-compiler
-        protoc --version
+        cd go-generated
+        go mod tidy
+        go build ./...
