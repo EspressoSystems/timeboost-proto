@@ -5,8 +5,6 @@ option go_package = "github.com/EspressoSystems/timeboost-proto/go-generated";
 package block;
 
 message Block {
-    uint32 namespace = 1;
-    uint64 round     = 2;
-    bytes  payload   = 3;
-    bytes  hash      = 4;
+    uint64 round     = 1;
+    bytes  payload   = 2;
 }

@@ -23,10 +23,8 @@ const (
 
 type Block struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Namespace     uint32                 `protobuf:"varint,1,opt,name=namespace,proto3" json:"namespace,omitempty"`
-	Round         uint64                 `protobuf:"varint,2,opt,name=round,proto3" json:"round,omitempty"`
-	Payload       []byte                 `protobuf:"bytes,3,opt,name=payload,proto3" json:"payload,omitempty"`
-	Hash          []byte                 `protobuf:"bytes,4,opt,name=hash,proto3" json:"hash,omitempty"`
+	Round         uint64                 `protobuf:"varint,1,opt,name=round,proto3" json:"round,omitempty"`
+	Payload       []byte                 `protobuf:"bytes,2,opt,name=payload,proto3" json:"payload,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -61,13 +59,6 @@ func (*Block) Descriptor() ([]byte, []int) {
 	return file_block_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *Block) GetNamespace() uint32 {
-	if x != nil {
-		return x.Namespace
-	}
-	return 0
-}
-
 func (x *Block) GetRound() uint64 {
 	if x != nil {
 		return x.Round
@@ -82,23 +73,14 @@ func (x *Block) GetPayload() []byte {
 	return nil
 }
 
-func (x *Block) GetHash() []byte {
-	if x != nil {
-		return x.Hash
-	}
-	return nil
-}
-
 var File_block_proto protoreflect.FileDescriptor
 
 const file_block_proto_rawDesc = "" +
 	"\n" +
-	"\vblock.proto\x12\x05block\"i\n" +
-	"\x05Block\x12\x1c\n" +
-	"\tnamespace\x18\x01 \x01(\rR\tnamespace\x12\x14\n" +
-	"\x05round\x18\x02 \x01(\x04R\x05round\x12\x18\n" +
-	"\apayload\x18\x03 \x01(\fR\apayload\x12\x12\n" +
-	"\x04hash\x18\x04 \x01(\fR\x04hashB9Z7github.com/EspressoSystems/timeboost-proto/go-generatedb\x06proto3"
+	"\vblock.proto\x12\x05block\"7\n" +
+	"\x05Block\x12\x14\n" +
+	"\x05round\x18\x01 \x01(\x04R\x05round\x12\x18\n" +
+	"\apayload\x18\x02 \x01(\fR\apayloadB9Z7github.com/EspressoSystems/timeboost-proto/go-generatedb\x06proto3"
 
 var (
 	file_block_proto_rawDescOnce sync.Once
