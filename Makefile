@@ -18,4 +18,4 @@ generate:
 	@cd $(OUT_DIR) && go get google.golang.org/protobuf@latest
 	@cd $(OUT_DIR) && go get google.golang.org/grpc@latest
 	@cd $(OUT_DIR) && go mod tidy
-	@echo "Code generation complete  test"
+	@echo "Code generation complete"
