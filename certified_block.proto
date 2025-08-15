@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package certified_block;
+
+message Block {
+  uint64 round   = 1;
+  bytes  payload = 2;
+}
+
+message BlockInfo {
+  uint64 blockNumber = 1;
+  uint64 roundNumber = 2;
+  uint64 committeeId = 3;
+  bytes  blockHash   = 4;
+}
+
+message Certificate {
+  BlockInfo          info       = 1;
+  bytes              commitment = 2;
+  map<uint32, bytes> signatures = 3;
+}
+
+message CertifiedBlock {
+  Block       block = 1;
+  Certificate cert  = 2;
+}
