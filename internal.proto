@@ -4,9 +4,13 @@ option go_package = "github.com/EspressoSystems/timeboost-proto/go-generated";
 
 package internal;
 
-import "google/protobuf/empty.proto";
 import "block.proto";
 
 service InternalApi {
-    rpc SubmitBlock (block.Block) returns (google.protobuf.Empty) {}
+    rpc SubmitBlock (block.Block) returns (SubmitReceipt) {}
+}
+
+message SubmitReceipt {
+    uint64 round = 1;
+    uint64 block = 2;
 }
