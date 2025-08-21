@@ -23,8 +23,9 @@ const (
 
 type Block struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Round         uint64                 `protobuf:"varint,1,opt,name=round,proto3" json:"round,omitempty"`
-	Payload       []byte                 `protobuf:"bytes,2,opt,name=payload,proto3" json:"payload,omitempty"`
+	Number        uint64                 `protobuf:"varint,1,opt,name=number,proto3" json:"number,omitempty"`
+	Round         uint64                 `protobuf:"varint,2,opt,name=round,proto3" json:"round,omitempty"`
+	Payload       []byte                 `protobuf:"bytes,3,opt,name=payload,proto3" json:"payload,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -59,6 +60,13 @@ func (*Block) Descriptor() ([]byte, []int) {
 	return file_block_proto_rawDescGZIP(), []int{0}
 }
 
+func (x *Block) GetNumber() uint64 {
+	if x != nil {
+		return x.Number
+	}
+	return 0
+}
+
 func (x *Block) GetRound() uint64 {
 	if x != nil {
 		return x.Round
@@ -77,10 +85,11 @@ var File_block_proto protoreflect.FileDescriptor
 
 const file_block_proto_rawDesc = "" +
 	"\n" +
-	"\vblock.proto\x12\x05block\"7\n" +
-	"\x05Block\x12\x14\n" +
-	"\x05round\x18\x01 \x01(\x04R\x05round\x12\x18\n" +
-	"\apayload\x18\x02 \x01(\fR\apayloadB9Z7github.com/EspressoSystems/timeboost-proto/go-generatedb\x06proto3"
+	"\vblock.proto\x12\x05block\"O\n" +
+	"\x05Block\x12\x16\n" +
+	"\x06number\x18\x01 \x01(\x04R\x06number\x12\x14\n" +
+	"\x05round\x18\x02 \x01(\x04R\x05round\x12\x18\n" +
+	"\apayload\x18\x03 \x01(\fR\apayloadB9Z7github.com/EspressoSystems/timeboost-proto/go-generatedb\x06proto3"
 
 var (
 	file_block_proto_rawDescOnce sync.Once
