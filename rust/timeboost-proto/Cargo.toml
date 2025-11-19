@@ -5,7 +5,7 @@ edition     = "2024"
 
 [lib]
 name = "timeboost_proto"
-path = "src/lib.rs"
+path = "src/protos/lib.rs"
 
 [dependencies]
 tonic = "0.14.1"
