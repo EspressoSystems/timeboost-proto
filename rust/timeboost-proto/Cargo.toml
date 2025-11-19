@@ -3,6 +3,10 @@ name = "timeboost-proto"
 description = "Timeboost protobuf types"
 edition     = "2024"
 
+[lib]
+name = "timeboost_proto"
+path = "src/lib.rs"
+
 [dependencies]
 tonic = "0.14.1"
 tonic-prost = "0.14.1"
