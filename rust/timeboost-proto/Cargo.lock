@@ -684,6 +684,7 @@ dependencies = [
 name = "timeboost-proto"
 version = "0.0.0"
 dependencies = [
+ "prost",
  "tonic",
  "tonic-prost",
  "tonic-prost-build",
