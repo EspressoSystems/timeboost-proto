@@ -1,0 +1,10 @@
+[package]
+name        = "builder"
+description = "Timeboost protobuf types"
+edition     = "2024"
+publish     = false
+
+[dependencies]
+anyhow = { workspace = true }
+tonic-prost-build = { workspace = true }
+
