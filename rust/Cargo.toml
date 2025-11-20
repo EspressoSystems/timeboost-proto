@@ -1,0 +1,11 @@
+[workspace]
+members  = ["builder", "timeboost-proto"]
+resolver = "3"
+
+[workspace.dependencies]
+anyhow = "1"
+prost = "0.14.1"
+tonic = "0.14.1"
+tonic-prost = "0.14.1"
+tonic-prost-build = "0.14.1"
+
