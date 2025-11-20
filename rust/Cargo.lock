@@ -90,6 +90,14 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "812e12b5285cc515a9c72a5c1d3b6d46a19dac5acfef5265968c166106e31dd3"
 
 [[package]]
+name = "builder"
+version = "0.0.0"
+dependencies = [
+ "anyhow",
+ "tonic-prost-build",
+]
+
+[[package]]
 name = "bytes"
 version = "1.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -687,7 +695,6 @@ dependencies = [
  "prost",
  "tonic",
  "tonic-prost",
- "tonic-prost-build",
 ]
 
 [[package]]

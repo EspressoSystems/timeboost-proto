@@ -1,21 +1,27 @@
-OUT_DIR := go-generated
-MODULE_PATH := github.com/EspressoSystems/timeboost-proto/go-generated
-GOBIN := $(shell go env GOPATH)/bin
+GO_OUT_DIR := go-generated
+GO_MODULE_PATH := github.com/EspressoSystems/timeboost-proto/go-generated
+GOBIN  := $(shell go env GOPATH)/bin
+PROTOS := protos
 
-.PHONY: generate
-generate:
+.PHONY: generate-go generate-rust
+
+generate-go:
 	@echo "Generating Go code..."
-	@if [ -z "$(wildcard *.proto)" ]; then echo "Error: No .proto files found"; exit 1; fi
-	@rm -rf $(OUT_DIR)
-	@mkdir -p $(OUT_DIR)
-	@protoc	--proto_path=.	\
+	@rm -rf $(GO_OUT_DIR)
+	@mkdir -p $(GO_OUT_DIR)
+	@protoc	--proto_path=$(PROTOS) \
 		--plugin=protoc-gen-go=$(GOBIN)/protoc-gen-go \
 		--plugin=protoc-gen-go-grpc=$(GOBIN)/protoc-gen-go-grpc \
-		--go_out=$(OUT_DIR) --go_opt=module=$(MODULE_PATH) \
-		--go-grpc_out=$(OUT_DIR) --go-grpc_opt=module=$(MODULE_PATH) \
-    	*.proto
-	@cd $(OUT_DIR) && go mod init $(MODULE_PATH)
-	@cd $(OUT_DIR) && go get google.golang.org/protobuf@latest
-	@cd $(OUT_DIR) && go get google.golang.org/grpc@latest
-	@cd $(OUT_DIR) && go mod tidy
+		--go_out=$(GO_OUT_DIR) --go_opt=module=$(GO_MODULE_PATH) \
+		--go-grpc_out=$(GO_OUT_DIR) --go-grpc_opt=module=$(GO_MODULE_PATH) \
+		$(PROTOS)/*.proto
+	@cd $(GO_OUT_DIR) && go mod init $(GO_MODULE_PATH)
+	@cd $(GO_OUT_DIR) && go get google.golang.org/protobuf@latest
+	@cd $(GO_OUT_DIR) && go get google.golang.org/grpc@latest
+	@cd $(GO_OUT_DIR) && go mod tidy
 	@echo "Code generation complete"
+
+generate-rust:
+	cd rust && \
+	cargo run --release --bin builder -- ../$(PROTOS)/ timeboost-proto/src/ && \
+	cargo check
