@@ -17,7 +17,7 @@ fn main() -> Result<()> {
         .build_server(true)
         .out_dir(out)
         .bytes(".block.Block.payload")
-        .bytes(".inclusion.Transaction.encoded_txn")
+        .bytes(".inclusion.InclusionList.encoded_txns")
         .compile_protos(
             &[
                 format!("{inp}/inclusion_list.proto"),
