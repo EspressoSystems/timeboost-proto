@@ -7,6 +7,11 @@ package forward;
 import "google/protobuf/empty.proto";
 import "inclusion_list.proto";
 
+message CatchupRound {
+    uint64 round = 1;
+}
+
 service ForwardApi {
     rpc SubmitInclusionList (inclusion.InclusionList) returns (google.protobuf.Empty) {}
+    rpc Catchup (CatchupRound) returns (google.protobuf.Empty) {}
 }

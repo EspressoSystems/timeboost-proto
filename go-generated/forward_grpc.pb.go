@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	ForwardApi_SubmitInclusionList_FullMethodName = "/forward.ForwardApi/SubmitInclusionList"
+	ForwardApi_Catchup_FullMethodName             = "/forward.ForwardApi/Catchup"
 )
 
 // ForwardApiClient is the client API for ForwardApi service.
@@ -28,6 +29,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ForwardApiClient interface {
 	SubmitInclusionList(ctx context.Context, in *InclusionList, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	Catchup(ctx context.Context, in *CatchupRound, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type forwardApiClient struct {
@@ -48,11 +50,22 @@ func (c *forwardApiClient) SubmitInclusionList(ctx context.Context, in *Inclusio
 	return out, nil
 }
 
+func (c *forwardApiClient) Catchup(ctx context.Context, in *CatchupRound, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, ForwardApi_Catchup_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ForwardApiServer is the server API for ForwardApi service.
 // All implementations must embed UnimplementedForwardApiServer
 // for forward compatibility.
 type ForwardApiServer interface {
 	SubmitInclusionList(context.Context, *InclusionList) (*emptypb.Empty, error)
+	Catchup(context.Context, *CatchupRound) (*emptypb.Empty, error)
 	mustEmbedUnimplementedForwardApiServer()
 }
 
@@ -65,6 +78,9 @@ type UnimplementedForwardApiServer struct{}
 
 func (UnimplementedForwardApiServer) SubmitInclusionList(context.Context, *InclusionList) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubmitInclusionList not implemented")
+}
+func (UnimplementedForwardApiServer) Catchup(context.Context, *CatchupRound) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Catchup not implemented")
 }
 func (UnimplementedForwardApiServer) mustEmbedUnimplementedForwardApiServer() {}
 func (UnimplementedForwardApiServer) testEmbeddedByValue()                    {}
@@ -105,6 +121,24 @@ func _ForwardApi_SubmitInclusionList_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ForwardApi_Catchup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CatchupRound)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ForwardApiServer).Catchup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ForwardApi_Catchup_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ForwardApiServer).Catchup(ctx, req.(*CatchupRound))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ForwardApi_ServiceDesc is the grpc.ServiceDesc for ForwardApi service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -115,6 +149,10 @@ var ForwardApi_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SubmitInclusionList",
 			Handler:    _ForwardApi_SubmitInclusionList_Handler,
+		},
+		{
+			MethodName: "Catchup",
+			Handler:    _ForwardApi_Catchup_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
