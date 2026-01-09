@@ -20,8 +20,8 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	ForwardApi_SubmitInclusionList_FullMethodName = "/forward.ForwardApi/SubmitInclusionList"
-	ForwardApi_Catchup_FullMethodName             = "/forward.ForwardApi/Catchup"
+	ForwardApi_SubmitInclusionList_FullMethodName  = "/forward.ForwardApi/SubmitInclusionList"
+	ForwardApi_UpdateTimeboostState_FullMethodName = "/forward.ForwardApi/UpdateTimeboostState"
 )
 
 // ForwardApiClient is the client API for ForwardApi service.
@@ -29,7 +29,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ForwardApiClient interface {
 	SubmitInclusionList(ctx context.Context, in *InclusionList, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	Catchup(ctx context.Context, in *CatchupRound, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	UpdateTimeboostState(ctx context.Context, in *TimeboostState, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type forwardApiClient struct {
@@ -50,10 +50,10 @@ func (c *forwardApiClient) SubmitInclusionList(ctx context.Context, in *Inclusio
 	return out, nil
 }
 
-func (c *forwardApiClient) Catchup(ctx context.Context, in *CatchupRound, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *forwardApiClient) UpdateTimeboostState(ctx context.Context, in *TimeboostState, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, ForwardApi_Catchup_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, ForwardApi_UpdateTimeboostState_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -65,7 +65,7 @@ func (c *forwardApiClient) Catchup(ctx context.Context, in *CatchupRound, opts .
 // for forward compatibility.
 type ForwardApiServer interface {
 	SubmitInclusionList(context.Context, *InclusionList) (*emptypb.Empty, error)
-	Catchup(context.Context, *CatchupRound) (*emptypb.Empty, error)
+	UpdateTimeboostState(context.Context, *TimeboostState) (*emptypb.Empty, error)
 	mustEmbedUnimplementedForwardApiServer()
 }
 
@@ -79,8 +79,8 @@ type UnimplementedForwardApiServer struct{}
 func (UnimplementedForwardApiServer) SubmitInclusionList(context.Context, *InclusionList) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubmitInclusionList not implemented")
 }
-func (UnimplementedForwardApiServer) Catchup(context.Context, *CatchupRound) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Catchup not implemented")
+func (UnimplementedForwardApiServer) UpdateTimeboostState(context.Context, *TimeboostState) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateTimeboostState not implemented")
 }
 func (UnimplementedForwardApiServer) mustEmbedUnimplementedForwardApiServer() {}
 func (UnimplementedForwardApiServer) testEmbeddedByValue()                    {}
@@ -121,20 +121,20 @@ func _ForwardApi_SubmitInclusionList_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ForwardApi_Catchup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CatchupRound)
+func _ForwardApi_UpdateTimeboostState_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TimeboostState)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ForwardApiServer).Catchup(ctx, in)
+		return srv.(ForwardApiServer).UpdateTimeboostState(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: ForwardApi_Catchup_FullMethodName,
+		FullMethod: ForwardApi_UpdateTimeboostState_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ForwardApiServer).Catchup(ctx, req.(*CatchupRound))
+		return srv.(ForwardApiServer).UpdateTimeboostState(ctx, req.(*TimeboostState))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -151,8 +151,8 @@ var ForwardApi_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _ForwardApi_SubmitInclusionList_Handler,
 		},
 		{
-			MethodName: "Catchup",
-			Handler:    _ForwardApi_Catchup_Handler,
+			MethodName: "UpdateTimeboostState",
+			Handler:    _ForwardApi_UpdateTimeboostState_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

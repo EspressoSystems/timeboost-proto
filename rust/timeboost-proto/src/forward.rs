@@ -4,6 +4,21 @@ pub struct CatchupRound {
     #[prost(uint64, tag = "1")]
     pub round: u64,
 }
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct TimeboostState {
+    #[prost(oneof = "timeboost_state::State", tags = "1, 2")]
+    pub state: ::core::option::Option<timeboost_state::State>,
+}
+/// Nested message and enum types in `TimeboostState`.
+pub mod timeboost_state {
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum State {
+        #[prost(message, tag = "1")]
+        Catchup(super::CatchupRound),
+        #[prost(bool, tag = "2")]
+        AwaitingHandover(bool),
+    }
+}
 /// Generated client implementations.
 pub mod forward_api_client {
     #![allow(
@@ -116,9 +131,9 @@ pub mod forward_api_client {
                 .insert(GrpcMethod::new("forward.ForwardApi", "SubmitInclusionList"));
             self.inner.unary(req, path, codec).await
         }
-        pub async fn catchup(
+        pub async fn update_timeboost_state(
             &mut self,
-            request: impl tonic::IntoRequest<super::CatchupRound>,
+            request: impl tonic::IntoRequest<super::TimeboostState>,
         ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
@@ -130,11 +145,11 @@ pub mod forward_api_client {
                 })?;
             let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/forward.ForwardApi/Catchup",
+                "/forward.ForwardApi/UpdateTimeboostState",
             );
             let mut req = request.into_request();
             req.extensions_mut()
-                .insert(GrpcMethod::new("forward.ForwardApi", "Catchup"));
+                .insert(GrpcMethod::new("forward.ForwardApi", "UpdateTimeboostState"));
             self.inner.unary(req, path, codec).await
         }
     }
@@ -156,9 +171,9 @@ pub mod forward_api_server {
             &self,
             request: tonic::Request<super::super::inclusion::InclusionList>,
         ) -> std::result::Result<tonic::Response<()>, tonic::Status>;
-        async fn catchup(
+        async fn update_timeboost_state(
             &self,
-            request: tonic::Request<super::CatchupRound>,
+            request: tonic::Request<super::TimeboostState>,
         ) -> std::result::Result<tonic::Response<()>, tonic::Status>;
     }
     #[derive(Debug)]
@@ -285,11 +300,13 @@ pub mod forward_api_server {
                     };
                     Box::pin(fut)
                 }
-                "/forward.ForwardApi/Catchup" => {
+                "/forward.ForwardApi/UpdateTimeboostState" => {
                     #[allow(non_camel_case_types)]
-                    struct CatchupSvc<T: ForwardApi>(pub Arc<T>);
-                    impl<T: ForwardApi> tonic::server::UnaryService<super::CatchupRound>
-                    for CatchupSvc<T> {
+                    struct UpdateTimeboostStateSvc<T: ForwardApi>(pub Arc<T>);
+                    impl<
+                        T: ForwardApi,
+                    > tonic::server::UnaryService<super::TimeboostState>
+                    for UpdateTimeboostStateSvc<T> {
                         type Response = ();
                         type Future = BoxFuture<
                             tonic::Response<Self::Response>,
@@ -297,11 +314,12 @@ pub mod forward_api_server {
                         >;
                         fn call(
                             &mut self,
-                            request: tonic::Request<super::CatchupRound>,
+                            request: tonic::Request<super::TimeboostState>,
                         ) -> Self::Future {
                             let inner = Arc::clone(&self.0);
                             let fut = async move {
-                                <T as ForwardApi>::catchup(&inner, request).await
+                                <T as ForwardApi>::update_timeboost_state(&inner, request)
+                                    .await
                             };
                             Box::pin(fut)
                         }
@@ -312,7 +330,7 @@ pub mod forward_api_server {
                     let max_encoding_message_size = self.max_encoding_message_size;
                     let inner = self.inner.clone();
                     let fut = async move {
-                        let method = CatchupSvc(inner);
+                        let method = UpdateTimeboostStateSvc(inner);
                         let codec = tonic_prost::ProstCodec::default();
                         let mut grpc = tonic::server::Grpc::new(codec)
                             .apply_compression_config(
