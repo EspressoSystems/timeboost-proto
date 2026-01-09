@@ -66,17 +66,103 @@ func (x *CatchupRound) GetRound() uint64 {
 	return 0
 }
 
+type TimeboostState struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to State:
+	//
+	//	*TimeboostState_Catchup
+	//	*TimeboostState_AwaitingHandover
+	State         isTimeboostState_State `protobuf_oneof:"state"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *TimeboostState) Reset() {
+	*x = TimeboostState{}
+	mi := &file_forward_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TimeboostState) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TimeboostState) ProtoMessage() {}
+
+func (x *TimeboostState) ProtoReflect() protoreflect.Message {
+	mi := &file_forward_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TimeboostState.ProtoReflect.Descriptor instead.
+func (*TimeboostState) Descriptor() ([]byte, []int) {
+	return file_forward_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *TimeboostState) GetState() isTimeboostState_State {
+	if x != nil {
+		return x.State
+	}
+	return nil
+}
+
+func (x *TimeboostState) GetCatchup() *CatchupRound {
+	if x != nil {
+		if x, ok := x.State.(*TimeboostState_Catchup); ok {
+			return x.Catchup
+		}
+	}
+	return nil
+}
+
+func (x *TimeboostState) GetAwaitingHandover() bool {
+	if x != nil {
+		if x, ok := x.State.(*TimeboostState_AwaitingHandover); ok {
+			return x.AwaitingHandover
+		}
+	}
+	return false
+}
+
+type isTimeboostState_State interface {
+	isTimeboostState_State()
+}
+
+type TimeboostState_Catchup struct {
+	Catchup *CatchupRound `protobuf:"bytes,1,opt,name=catchup,proto3,oneof"`
+}
+
+type TimeboostState_AwaitingHandover struct {
+	AwaitingHandover bool `protobuf:"varint,2,opt,name=awaiting_handover,json=awaitingHandover,proto3,oneof"`
+}
+
+func (*TimeboostState_Catchup) isTimeboostState_State() {}
+
+func (*TimeboostState_AwaitingHandover) isTimeboostState_State() {}
+
 var File_forward_proto protoreflect.FileDescriptor
 
 const file_forward_proto_rawDesc = "" +
 	"\n" +
 	"\rforward.proto\x12\aforward\x1a\x1bgoogle/protobuf/empty.proto\x1a\x14inclusion_list.proto\"$\n" +
 	"\fCatchupRound\x12\x14\n" +
-	"\x05round\x18\x01 \x01(\x04R\x05round2\x93\x01\n" +
+	"\x05round\x18\x01 \x01(\x04R\x05round\"{\n" +
+	"\x0eTimeboostState\x121\n" +
+	"\acatchup\x18\x01 \x01(\v2\x15.forward.CatchupRoundH\x00R\acatchup\x12-\n" +
+	"\x11awaiting_handover\x18\x02 \x01(\bH\x00R\x10awaitingHandoverB\a\n" +
+	"\x05state2\xa2\x01\n" +
 	"\n" +
 	"ForwardApi\x12I\n" +
-	"\x13SubmitInclusionList\x12\x18.inclusion.InclusionList\x1a\x16.google.protobuf.Empty\"\x00\x12:\n" +
-	"\aCatchup\x12\x15.forward.CatchupRound\x1a\x16.google.protobuf.Empty\"\x00B9Z7github.com/EspressoSystems/timeboost-proto/go-generatedb\x06proto3"
+	"\x13SubmitInclusionList\x12\x18.inclusion.InclusionList\x1a\x16.google.protobuf.Empty\"\x00\x12I\n" +
+	"\x14UpdateTimeboostState\x12\x17.forward.TimeboostState\x1a\x16.google.protobuf.Empty\"\x00B9Z7github.com/EspressoSystems/timeboost-proto/go-generatedb\x06proto3"
 
 var (
 	file_forward_proto_rawDescOnce sync.Once
@@ -90,22 +176,24 @@ func file_forward_proto_rawDescGZIP() []byte {
 	return file_forward_proto_rawDescData
 }
 
-var file_forward_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_forward_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_forward_proto_goTypes = []any{
-	(*CatchupRound)(nil),  // 0: forward.CatchupRound
-	(*InclusionList)(nil), // 1: inclusion.InclusionList
-	(*emptypb.Empty)(nil), // 2: google.protobuf.Empty
+	(*CatchupRound)(nil),   // 0: forward.CatchupRound
+	(*TimeboostState)(nil), // 1: forward.TimeboostState
+	(*InclusionList)(nil),  // 2: inclusion.InclusionList
+	(*emptypb.Empty)(nil),  // 3: google.protobuf.Empty
 }
 var file_forward_proto_depIdxs = []int32{
-	1, // 0: forward.ForwardApi.SubmitInclusionList:input_type -> inclusion.InclusionList
-	0, // 1: forward.ForwardApi.Catchup:input_type -> forward.CatchupRound
-	2, // 2: forward.ForwardApi.SubmitInclusionList:output_type -> google.protobuf.Empty
-	2, // 3: forward.ForwardApi.Catchup:output_type -> google.protobuf.Empty
-	2, // [2:4] is the sub-list for method output_type
-	0, // [0:2] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	0, // 0: forward.TimeboostState.catchup:type_name -> forward.CatchupRound
+	2, // 1: forward.ForwardApi.SubmitInclusionList:input_type -> inclusion.InclusionList
+	1, // 2: forward.ForwardApi.UpdateTimeboostState:input_type -> forward.TimeboostState
+	3, // 3: forward.ForwardApi.SubmitInclusionList:output_type -> google.protobuf.Empty
+	3, // 4: forward.ForwardApi.UpdateTimeboostState:output_type -> google.protobuf.Empty
+	3, // [3:5] is the sub-list for method output_type
+	1, // [1:3] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_forward_proto_init() }
@@ -114,13 +202,17 @@ func file_forward_proto_init() {
 		return
 	}
 	file_inclusion_list_proto_init()
+	file_forward_proto_msgTypes[1].OneofWrappers = []any{
+		(*TimeboostState_Catchup)(nil),
+		(*TimeboostState_AwaitingHandover)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_forward_proto_rawDesc), len(file_forward_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   1,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

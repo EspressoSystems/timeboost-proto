@@ -11,7 +11,14 @@ message CatchupRound {
     uint64 round = 1;
 }
 
+message TimeboostState {
+    oneof state {
+        CatchupRound catchup = 1;
+        bool awaiting_handover = 2;
+    }
+}
+
 service ForwardApi {
     rpc SubmitInclusionList (inclusion.InclusionList) returns (google.protobuf.Empty) {}
-    rpc Catchup (CatchupRound) returns (google.protobuf.Empty) {}
+    rpc UpdateTimeboostState (TimeboostState) returns (google.protobuf.Empty) {}
 }
