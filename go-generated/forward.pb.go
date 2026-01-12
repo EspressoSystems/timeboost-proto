@@ -123,13 +123,13 @@ func (x *TimeboostState) GetCatchup() *CatchupRound {
 	return nil
 }
 
-func (x *TimeboostState) GetAwaitingHandover() bool {
+func (x *TimeboostState) GetAwaitingHandover() *emptypb.Empty {
 	if x != nil {
 		if x, ok := x.State.(*TimeboostState_AwaitingHandover); ok {
 			return x.AwaitingHandover
 		}
 	}
-	return false
+	return nil
 }
 
 type isTimeboostState_State interface {
@@ -141,7 +141,7 @@ type TimeboostState_Catchup struct {
 }
 
 type TimeboostState_AwaitingHandover struct {
-	AwaitingHandover bool `protobuf:"varint,2,opt,name=awaiting_handover,json=awaitingHandover,proto3,oneof"`
+	AwaitingHandover *emptypb.Empty `protobuf:"bytes,2,opt,name=awaiting_handover,json=awaitingHandover,proto3,oneof"`
 }
 
 func (*TimeboostState_Catchup) isTimeboostState_State() {}
@@ -154,10 +154,10 @@ const file_forward_proto_rawDesc = "" +
 	"\n" +
 	"\rforward.proto\x12\aforward\x1a\x1bgoogle/protobuf/empty.proto\x1a\x14inclusion_list.proto\"$\n" +
 	"\fCatchupRound\x12\x14\n" +
-	"\x05round\x18\x01 \x01(\x04R\x05round\"{\n" +
+	"\x05round\x18\x01 \x01(\x04R\x05round\"\x93\x01\n" +
 	"\x0eTimeboostState\x121\n" +
-	"\acatchup\x18\x01 \x01(\v2\x15.forward.CatchupRoundH\x00R\acatchup\x12-\n" +
-	"\x11awaiting_handover\x18\x02 \x01(\bH\x00R\x10awaitingHandoverB\a\n" +
+	"\acatchup\x18\x01 \x01(\v2\x15.forward.CatchupRoundH\x00R\acatchup\x12E\n" +
+	"\x11awaiting_handover\x18\x02 \x01(\v2\x16.google.protobuf.EmptyH\x00R\x10awaitingHandoverB\a\n" +
 	"\x05state2\xa2\x01\n" +
 	"\n" +
 	"ForwardApi\x12I\n" +
@@ -180,20 +180,21 @@ var file_forward_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_forward_proto_goTypes = []any{
 	(*CatchupRound)(nil),   // 0: forward.CatchupRound
 	(*TimeboostState)(nil), // 1: forward.TimeboostState
-	(*InclusionList)(nil),  // 2: inclusion.InclusionList
-	(*emptypb.Empty)(nil),  // 3: google.protobuf.Empty
+	(*emptypb.Empty)(nil),  // 2: google.protobuf.Empty
+	(*InclusionList)(nil),  // 3: inclusion.InclusionList
 }
 var file_forward_proto_depIdxs = []int32{
 	0, // 0: forward.TimeboostState.catchup:type_name -> forward.CatchupRound
-	2, // 1: forward.ForwardApi.SubmitInclusionList:input_type -> inclusion.InclusionList
-	1, // 2: forward.ForwardApi.UpdateTimeboostState:input_type -> forward.TimeboostState
-	3, // 3: forward.ForwardApi.SubmitInclusionList:output_type -> google.protobuf.Empty
-	3, // 4: forward.ForwardApi.UpdateTimeboostState:output_type -> google.protobuf.Empty
-	3, // [3:5] is the sub-list for method output_type
-	1, // [1:3] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	2, // 1: forward.TimeboostState.awaiting_handover:type_name -> google.protobuf.Empty
+	3, // 2: forward.ForwardApi.SubmitInclusionList:input_type -> inclusion.InclusionList
+	1, // 3: forward.ForwardApi.UpdateTimeboostState:input_type -> forward.TimeboostState
+	2, // 4: forward.ForwardApi.SubmitInclusionList:output_type -> google.protobuf.Empty
+	2, // 5: forward.ForwardApi.UpdateTimeboostState:output_type -> google.protobuf.Empty
+	4, // [4:6] is the sub-list for method output_type
+	2, // [2:4] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_forward_proto_init() }

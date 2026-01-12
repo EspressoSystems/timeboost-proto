@@ -15,8 +15,8 @@ pub mod timeboost_state {
     pub enum State {
         #[prost(message, tag = "1")]
         Catchup(super::CatchupRound),
-        #[prost(bool, tag = "2")]
-        AwaitingHandover(bool),
+        #[prost(message, tag = "2")]
+        AwaitingHandover(()),
     }
 }
 /// Generated client implementations.

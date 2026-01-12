@@ -14,7 +14,7 @@ message CatchupRound {
 message TimeboostState {
     oneof state {
         CatchupRound catchup = 1;
-        bool awaiting_handover = 2;
+        google.protobuf.Empty awaiting_handover = 2;
     }
 }
 
