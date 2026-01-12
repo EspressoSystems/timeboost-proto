@@ -11,12 +11,10 @@ message CatchupRound {
     uint64 round = 1;
 }
 
-message AwaitingHandover {}
-
 message TimeboostState {
     oneof state {
         CatchupRound catchup = 1;
-        AwaitingHandover awaiting_handover = 2;
+        google.protobuf.Empty awaiting_handover = 2;
     }
 }
 

@@ -5,8 +5,6 @@ pub struct CatchupRound {
     pub round: u64,
 }
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct AwaitingHandover {}
-#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TimeboostState {
     #[prost(oneof = "timeboost_state::State", tags = "1, 2")]
     pub state: ::core::option::Option<timeboost_state::State>,
@@ -18,7 +16,7 @@ pub mod timeboost_state {
         #[prost(message, tag = "1")]
         Catchup(super::CatchupRound),
         #[prost(message, tag = "2")]
-        AwaitingHandover(super::AwaitingHandover),
+        AwaitingHandover(()),
     }
 }
 /// Generated client implementations.
